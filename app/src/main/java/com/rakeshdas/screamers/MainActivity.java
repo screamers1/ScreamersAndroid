@@ -1,17 +1,30 @@
 package com.rakeshdas.screamers;
 
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements SensorEventListener, SensorListener {
+private TextView rMain;
+private SensorManager sensorManager;
+private Long lastUpdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rMain = (TextView)findViewById(R.id.mainTextview);
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        lastUpdate = System.currentTimeMillis();
+        sensorManager.registerListener(this, SensorManager.SENSOR_ACCELEROMETER);
     }
 
 
@@ -35,5 +48,49 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            getAccelerometer(event);
+        }
+    }
+    private void getAccelerometer (SensorEvent event){
+        float [] values = event.values;
+
+        float x = values[0];
+        float y = values[1];
+        float z = values[2];
+
+        float accelationSquareRoot = (x * x + y * y + z * z)/(SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        long actualTime = event.timestamp;
+
+        if (accelationSquareRoot >= 2){
+            if (actualTime - lastUpdate < 200){
+                return;
+            }
+            lastUpdate = actualTime;
+            Toast.makeText(getApplicationContext(), "Device was shuffled!", Toast.LENGTH_LONG);
+
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onSensorChanged(int sensor, float[] values) {
+        if (sensor == SensorManager.SENSOR_ACCELEROMETER){
+            long curTime = System.currentTimeMillis();
+            if ((curTime-lastUpdate))
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(int sensor, int accuracy) {
+
     }
 }
