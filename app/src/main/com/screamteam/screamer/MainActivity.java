@@ -1,4 +1,4 @@
-package com.rakeshdas.screamers;
+package com.screamteam.screamer;
 
 import android.app.Activity;
 import android.hardware.Sensor;
@@ -17,6 +17,8 @@ public class MainActivity extends Activity implements SensorEventListener, Senso
 private TextView rMain;
 private SensorManager sensorManager;
 private Long lastUpdate;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,7 @@ private Long lastUpdate;
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         lastUpdate = System.currentTimeMillis();
         sensorManager.registerListener(this, SensorManager.SENSOR_ACCELEROMETER);
+
     }
 
 
@@ -93,4 +96,5 @@ private Long lastUpdate;
     public void onAccuracyChanged(int sensor, int accuracy) {
 
     }
+*/
 }
