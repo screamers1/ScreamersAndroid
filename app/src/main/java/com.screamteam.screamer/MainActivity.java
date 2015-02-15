@@ -58,6 +58,17 @@ private Long lastUpdate;
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             getAccelerometer(event);
         }
+
+        //current XYZ values
+        float x = event.values[0], y = event.values[1], z = event.values[2];
+
+        // Wilhelm Scream
+        if((x < 2 || x > -2) && (y < 2 || y > -2) && (z < 2 || z > -2)){
+            PlaySound.wilhelm()
+          //display.Wilhelm() picture
+            Thread.sleep(2000) /////// MAY CAUSE ERROR
+        }
+
     }
     private void getAccelerometer (SensorEvent event){
         float [] values = event.values;
@@ -66,8 +77,9 @@ private Long lastUpdate;
         float y = values[1];
         float z = values[2];
 
-        float accelationSquareRoot = (x * x + y * y + z * z)/(SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+//        float accelationSquareRoot = (x * x + y * y + z * z)/(SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
         long actualTime = event.timestamp;
+
 
         if (accelationSquareRoot >= 2){
             if (actualTime - lastUpdate < 200){
